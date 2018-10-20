@@ -1,0 +1,12 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+    update_chord_change_record
+
+Resources:
+    UpdateChordChangeRecord:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: build/
+            Handler: app.lambda_handler
+            Runtime: python3.6

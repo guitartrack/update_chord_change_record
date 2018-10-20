@@ -1,0 +1,1 @@
+Function that updates chord change record if it is higher than an existing record

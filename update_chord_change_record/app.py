@@ -26,8 +26,8 @@ def lambda_handler(event, context):
 
         update_chord_change_record(
             record['dynamodb']['Keys']['chord_change']['S'],
-            record['dynamodb']['NewImage']['count']['N']
-       )
+            int(record['dynamodb']['NewImage']['count']['N'])
+        )
 
 
 def update_chord_change_record(chord_change: str, count: int):

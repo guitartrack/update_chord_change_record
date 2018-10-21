@@ -42,13 +42,10 @@ def update_chord_change_record(chord_change: str, count: int):
 
     record.update(actions=[ChordChangeRecord.last_attempt_at.set(now)])
 
-    try:
+    if record.count < count:
         record.update(
             actions=[
                 ChordChangeRecord.count.set(count),
                 ChordChangeRecord.last_record_at.set(now)
             ],
-            condition=(ChordChangeRecord.count < count)
         )
-    except UpdateError:
-        pass

@@ -21,10 +21,13 @@ class ChordChangeRecord(Model):
 
 def lambda_handler(event, context):
     for record in event['Records']:
+        if record['eventName'] != 'INSERT':
+            continue
+
         update_chord_change_record(
             record['dynamodb']['Keys']['chord_change']['S'],
-            record['dynamodb']['NewImage']['count']['N']
-       )
+            int(record['dynamodb']['NewImage']['count']['N'])
+        )
 
 
 def update_chord_change_record(chord_change: str, count: int):
@@ -39,13 +42,10 @@ def update_chord_change_record(chord_change: str, count: int):
 
     record.update(actions=[ChordChangeRecord.last_attempt_at.set(now)])
 
-    try:
+    if record.count < count:
         record.update(
             actions=[
                 ChordChangeRecord.count.set(count),
                 ChordChangeRecord.last_record_at.set(now)
             ],
-            condition=(ChordChangeRecord.count < count)
         )
-    except UpdateError:
-        pass

@@ -21,6 +21,9 @@ class ChordChangeRecord(Model):
 
 def lambda_handler(event, context):
     for record in event['Records']:
+        if record['eventName'] != 'INSERT':
+            continue
+
         update_chord_change_record(
             record['dynamodb']['Keys']['chord_change']['S'],
             record['dynamodb']['NewImage']['count']['N']
